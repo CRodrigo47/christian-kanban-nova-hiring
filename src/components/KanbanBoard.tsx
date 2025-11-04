@@ -1,15 +1,18 @@
 import { useState, useMemo } from "react"
 import PlusIcon from "../icons/PlusIcon"
-import { Column, Id, Task } from "../types"
+import { Column, Id, Task, TaskType } from "../types"
 import ColumnContainer from "./ColumnContainer"
 import { DndContext, DragOverlay, DragStartEvent, DragEndEvent, DragOverEvent, useSensors, useSensor, PointerSensor } from "@dnd-kit/core"
 import { SortableContext, arrayMove } from "@dnd-kit/sortable"
 import { createPortal } from "react-dom"
 import TaskCard from "./TaskCard"
+import TaskModal from "./TaskModal"
 
 
 const KanbanBoard = () => {
 
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalColumnId, setModalColumnId] = useState<Id | null>(null);
     const [columns, setColumns] = useState<Column[]>([])
     const [activeColumn, setActiveColumn] = useState<Column | null>(null)
     const [activeTask, setActiveTask] = useState<Task | null>(null)
@@ -47,14 +50,19 @@ const KanbanBoard = () => {
         setColumns(newColumns)
     }
 
-    function createTask (columnId: Id) {
+    function createTask(columnId: Id, content: string, type: TaskType) {
         const newTask: Task = {
             id: generateId(),
             columnId,
-            content: `Task ${tasks.length + 1}`,
+            content,
+            type,
         };
-        setTasks([...tasks, newTask])
+        setTasks([...tasks, newTask]);
+    }
 
+    function openCreateTaskModal(columnId: Id) {
+    setModalColumnId(columnId);
+    setIsModalOpen(true);
     }
 
     function deleteTask (id:Id) {
@@ -156,7 +164,7 @@ const KanbanBoard = () => {
                                 column={col}
                                 deleteColumn={deleteColumn}
                                 updateColumn={updateColumn}
-                                createTask={createTask}
+                                createTask={openCreateTaskModal}
                                 tasks = {tasks.filter((task)=>task.columnId === col.id)}
                                 deleteTask={deleteTask}
                                 updateTask={updateTask}
@@ -184,7 +192,7 @@ const KanbanBoard = () => {
                             column={activeColumn}
                             deleteColumn={deleteColumn}
                             updateColumn={updateColumn}
-                            createTask={createTask}
+                            createTask={openCreateTaskModal}
                             tasks={tasks.filter((task) => task.columnId === activeColumn.id)}
                             deleteTask={deleteTask}
                             updateTask={updateTask}
@@ -195,6 +203,16 @@ const KanbanBoard = () => {
                     document.body
                 )}
             </DndContext>
+
+            {isModalOpen && modalColumnId && (
+    <TaskModal
+        onClose={() => setIsModalOpen(false)}
+        onSubmit={(content, type) => {
+            createTask(modalColumnId, content, type);
+            setIsModalOpen(false);
+        }}
+    />
+)}
 
         </div>
     )
