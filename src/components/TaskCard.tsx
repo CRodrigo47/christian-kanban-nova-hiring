@@ -35,6 +35,20 @@ const TaskCard = ( {task, deleteTask, updateTask}:Props ) => {
         border-rose-500 cursor-grab relative"/>
     }
 
+    const getTaskColors = () => {
+        switch (task.type) {
+            case "successToast":
+                return "bg-green-900 hover:ring-green-500";
+            case "errorToast":
+                return "bg-red-900 hover:ring-red-500";
+            case "chatGPTQuery":
+                return "bg-blue-900 hover:ring-blue-500";
+            default:
+                // Fallback por si acaso
+                return "bg-mainBackgroundColor hover:ring-rose-500";
+        }
+    };
+
     if (editMode) {
         return (
             <div {...attributes} {...listeners}
@@ -63,10 +77,10 @@ const TaskCard = ( {task, deleteTask, updateTask}:Props ) => {
         onMouseLeave={()=>{setMouseIsOver(false)}}
         {...attributes} {...listeners}
         ref={setNodeRef} style={style}
-        className="bg-mainBackgroundColor p-2.5 h-[100px]
+        className={`p-2.5 h-[100px]
         min-h-[100px] items-center flex flex-left rounded-xl
         hover:ring-2 hover:ring-inset hover:ring-rose-500
-        cursor-grab relative">
+        cursor-grab relative ${getTaskColors()}`}>
         <p className="my-auto h-[90%] w-full overflow-y-auto
         overflow-x-hidden whitespace-pre-wrap">
             {" "}{task.content}
