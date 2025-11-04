@@ -7,7 +7,6 @@ import axios from "axios";
 const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
 export const useTaskExecutor = () => {
-
   const [isLoading, setIsLoading] = useState(false);
 
   const handleChatGPTQuery = async (prompt: string) => {
@@ -78,25 +77,30 @@ export const useTaskExecutor = () => {
         id: loadingToastId,
         duration: 5000,
       });
+      throw new Error(errorMsg);
     }
   };
 
   // Main Execute Function
   const executeTasks = async (tasks: Task[]) => {
     setIsLoading(true);
-    for (const task of tasks) {
-      switch (task.type) {
-        case "successToast":
-          toast.success(task.content, {duration: 2000});
-          break;
-        case "errorToast":
-          toast.error(task.content, {duration: 2000});
-          break;
-        case "chatGPTQuery":
-          await handleChatGPTQuery(task.content);
-          break;
+    try {
+      for (const task of tasks) {
+        switch (task.type) {
+          case "successToast":
+            toast.success(task.content, { duration: 2000 });
+            break;
+          case "errorToast":
+            toast.error(task.content, { duration: 2000 });
+            break;
+          case "chatGPTQuery":
+            await handleChatGPTQuery(task.content);
+            break;
+        }
+        await delay(1500);
       }
-      await delay(1500);
+    } catch (error) {
+      console.error("Task execution stopped due to error:", error);
     }
     setIsLoading(false);
   };
