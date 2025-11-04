@@ -123,7 +123,7 @@ const ColumnContainer = (props: Props) => {
         <div className="flex items-center gap-2">
           <button
             onClick={(e) => {
-              e.stopPropagation(); // Evita activar el editMode del título
+              e.stopPropagation();
               executeTasks(tasks);
             }}
             disabled={isLoading || tasks.length === 0}
@@ -133,7 +133,7 @@ const ColumnContainer = (props: Props) => {
           </button>
           <button
             onClick={(e) => {
-              e.stopPropagation(); // Evita activar el editMode del título
+              e.stopPropagation();
               deleteColumn(column.id);
             }}
             className="stroke-gray-500
@@ -163,7 +163,7 @@ const ColumnContainer = (props: Props) => {
       {/* Column Footer*/}
       <button
         onClick={() => {
-          createTask(column.id); // Esto ahora llama a openCreateTaskModal
+          createTask(column.id); // Now calls openCreateTaskModal
         }}
         className="flex gap-2 items-center
             border-columnBackgroundColor border2 rounded-md p-2

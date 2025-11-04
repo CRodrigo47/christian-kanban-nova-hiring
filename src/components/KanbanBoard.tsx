@@ -135,7 +135,7 @@ const KanbanBoard = () => {
         }
 
         const isOverAColumn = over.data.current?.type === "Column";
-        //dorpping a task over another coloumn
+        //dropping a task over another coloumn
         if (isActiveATask && isOverAColumn){
             setTasks((tasks)=>{
                 const activeIndex = tasks.findIndex((t)=>t.id === activeId);

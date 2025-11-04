@@ -1,11 +1,9 @@
-// src/hooks/useTaskExecutor.tsx
-
 import { useState } from "react";
 import { Task } from "../types";
 import { toast } from "react-hot-toast";
 import axios from "axios";
 
-// Función de delay
+// Delay function
 const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
 export const useTaskExecutor = () => {
@@ -13,7 +11,7 @@ export const useTaskExecutor = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleChatGPTQuery = async (prompt: string) => {
-    // Usar la variable de entorno
+    // Use .env variable
     const API_KEY = import.meta.env.VITE_OPENAI_API_KEY;
 
     if (!API_KEY) {
@@ -54,7 +52,7 @@ export const useTaskExecutor = () => {
               </button>
             </div>
             <div
-              className="task" // Para el estilo del scrollbar
+              className="task" // Scrollbar style
               style={{
                 maxHeight: "300px",
                 overflowY: "auto",
@@ -68,7 +66,7 @@ export const useTaskExecutor = () => {
         { id: loadingToastId, duration: 15000 }
       );
     } catch (error) {
-      // Manejar el error
+      // Error management
       let errorMsg = "An unknown error occurred.";
       if (axios.isAxiosError(error) && error.response) {
         errorMsg =
@@ -83,7 +81,7 @@ export const useTaskExecutor = () => {
     }
   };
 
-  // La función principal de ejecución
+  // Main Execute Function
   const executeTasks = async (tasks: Task[]) => {
     setIsLoading(true);
     for (const task of tasks) {

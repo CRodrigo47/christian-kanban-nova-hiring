@@ -44,7 +44,7 @@ const TaskCard = ( {task, deleteTask, updateTask}:Props ) => {
             case "chatGPTQuery":
                 return "bg-blue-900 hover:ring-blue-500";
             default:
-                // Fallback por si acaso
+                // Fallback, just in case
                 return "bg-mainBackgroundColor hover:ring-rose-500";
         }
     };
