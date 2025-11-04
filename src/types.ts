@@ -5,8 +5,11 @@ export type Column ={
     title: string;
 }
 
+export type TaskType = "successToast" | "errorToast" | "chatGPTQuery";
+
 export type Task = {
     id: Id;
     columnId: Id;
     content: string;
+    type: TaskType;
 }
